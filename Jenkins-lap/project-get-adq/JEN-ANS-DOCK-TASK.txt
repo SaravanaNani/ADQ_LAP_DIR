@@ -1,0 +1,102 @@
+HI Te\m
+ 
+Assignment Using Terraform, Ansible and Jenkins. ***You should not create any configuration manually***
+ 
+1.Using Terraform -> Create Jenkins Server , choose your own OS and Setup latest Jenkins
+2.Using Terraform -> Create One Server - Ubuntu Server OS Version : 22.04 Desktop Pro 
+3.Using Ansible -> Install Python, Ubuntu Desktop - Chrome Remote Desktop on VM Instance Created through Terraform , Setup Ubuntu Desktop Environment on VM instance
+4.In Jenkins Server -> Using docker agent node -> Execute Point 2 & 3 
+5.Connect from your Chrome web browser to the desktop environment on the VM instance.
+Hope you all clear with the task
+i need perfect 100% quality in coding and implementation
+Use this image - 
+ubuntu-pro-2004-focal-v20210720
+jobs should be configured in master and assigned to users to run the job in slave nodes
+
+-----------------------------------------------------------------------------------------------
+Sure, I understand the task. Let's break it down step by step:
+
+1.Using Terraform to Create Jenkins Server:
+
+-> Create a Terraform script to provision a virtual machine (VM) instance with the chosen OS.
+
+	Install and configure Jenkins on this VM instance.
+      
+2.Using Terraform to Create an Ubuntu Desktop Server:
+
+
+-> Create another Terraform script to provision a VM instance with Ubuntu Desktop OS.
+
+3.Using Ansible to Configure the Ubuntu Desktop Server:
+
+->Write an Ansible playbook to:
+
+	Install Python on the Ubuntu Desktop server.
+	Install Chrome Remote Desktop.
+	Set up the Ubuntu Desktop Environment.
+4.Execute Point 2 & 3 in Jenkins Server using Docker Agent Node:
+	
+	Configure Jenkins job(s) on the Jenkins server.
+	Use Docker agent node to execute these jobs.
+	
+5. Connect to the Desktop Environment on the VM Instance:
+
+-> Use Chrome web browser to connect to the desktop environment on the VM instance via Chrome Remote Desktop.\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Good morning sir,
+
+sir I wanted to provide clarity on our approach for the above task and confirm our understanding with you. Here’s the plan we have outlined:
+
+1.Using Terraform to Create Jenkins Server:
+We will create a Terraform script to provision a virtual machine (VM) instance with the chosen OS.
+This script will also handle the installation and configuration of Jenkins on the VM instance.
+Using Terraform to Create an Ubuntu Desktop Server:
+
+Another Terraform script will be created to provision a VM instance with Ubuntu Desktop OS.
+Question: Do we need to use the above Jenkins server to automate this Terraform script (Terraform-Jenkins integration)?
+Using Ansible to Configure the Ubuntu Desktop Server:
+
+We will write an Ansible playbook to:
+Install Python on the Ubuntu Desktop server.
+Install Chrome Remote Desktop.
+Set up the Ubuntu Desktop Environment.
+Question: Should we use the Jenkins server to automate this playbook installation on the Ubuntu Desktop Pro server created in step 2? Essentially, should we assume Jenkins as the Master node of Ansible and the VM from step 2 as the worker node (Ansible-Jenkins integration)?
+Execute Points 2 & 3 in Jenkins Server using Docker Agent Node:
+
+Configure Jenkins jobs on the Jenkins server.
+Use Docker agent nodes to execute these jobs.
+Connect to the Desktop Environment on the VM Instance:
+
+Use the Chrome web browser to connect to the desktop environment on the VM instance via Chrome Remote Desktop.
+Please let me know if this approach aligns with our objectives or if there are any adjustments needed.
+
+Thank you.
+

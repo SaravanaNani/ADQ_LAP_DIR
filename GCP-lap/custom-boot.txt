@@ -1,0 +1,36 @@
+
+----------------------------------------
+creating Snapshot from existing VM
+-----------------------------------------
+
+gcloud compute disks snapshot terraform --snapshot-names linuxterra --zone us-central1-a
+
+----------------------------------------
+creating custom image using snapshot
+----------------------------------------
+
+gcloud compute images create my-custom-linux-image --source-snapshot linuxterra --family linux-custom-image --storage-location us
+
+-----------------------------------------
+creating vm uisng custom boot image:
+------------------------------------------
+
+gcloud compute instances create my-vm --project saravana7781 --machine-type=n1-standard-4 --zone=us-east1-b --service-account=default --boot-disk-size=200GB --image=my-custom-linux-image --boot-disk-auto-delete
+
+
+-------------------------------------------
+
+creating custom image using Existing VM Boot Disk :
+
+1.Stop the existing VM using the Boot disk you need:
+
+---------------------------------------------------------------------
+
+gcloud compute instances stop terraform --zone us-central1-a
+
+---------------------------------------------------------------------
+
+2. Create the image now
+
+gcloud compute images create terra-linux-image --source-disk terraform --family linux-custom-image --storage-location us
+-----------------------------------------------------------------------------------------------------------------------------

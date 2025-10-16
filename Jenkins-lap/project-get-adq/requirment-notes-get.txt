@@ -1,0 +1,53 @@
+1. Execution to be under one GCP project per environment (Environments : DEV & PROD) (Remarks: No individual projects ) Group has to work on one GCP project
+
+   Required 2 Projects: 
+   project_name: gcp_adq_pocproject_dev
+   project_name: gcp_adq_pocproject_prd
+   
+2. Folder Structure & Server names for the application and jenkins server
+	
+    Jenkins Server : Terraform folder should be renamed to "adq-jenkins-box", Server name/folder name/label - application, label (jenkins-server), environment (dev/prd)
+	
+	Application Server (ubuntu desktop) :  Folder to created - "adq_ubuntudesktop"
+	
+	adq_ubuntudesktop
+		--- terraform
+				--- code (dev & prd)
+		--- ansible
+		        --- code (dev & prd) 
+		--- Jenkinsfile
+		--- Dockerfile
+		--- ReadMe (Complete flow of the Job is explained here - adq_ubuntudesktop)
+
+3. Under Ansible 
+   
+   Install Apache, Tomcat Server, Python, Notepad++, java
+   Restart Services 
+   Application Samples (Python helloworld/notebook/dairy) and Java application 
+   
+4. Under Jenkins Server:
+
+a. Application Pipelines
+	1. Create Applications Pipelines - Java Application CICD approach
+	2. Create Applications Pipelines - Python Application CICD approach
+	3. above 1 & 2 Pipelines should have below scenarios
+	    -- when you run the pipeline, it should build the code from the Github , upload the code to either GCS Bucket/ Nexus/jfrog - Version : py_app_v1.0 (v1.1,1.2.....etc)
+		-- you should ask the prompt whether to deploy the application or not, if not , job should be closed, if yes , it should deploy the code to ubuntu server (adq_ubuntudesktop)
+
+b. IaC Pipelines
+
+Create Job *** "adq_ubuntudesktop" , jenkinsfile path : adq_ubuntudesktop\Jenkinsfile, Add Parameters - Environment (DEV& PRD), Terraform (Skip, Plan, Apply, Destroy), Terraform Extra Args (Txt box), Ansible (Skip, Apply, Destroy), Ansible Playbook (txt box), Ansible Extra Args (txt box), Build Button
+
+Build Scenarios:
+   1. Environment - DEV/PRD, Terraform Apply , Ansible Apply :- it should be execute the Terraform & Ansible Script. 
+   Limitations: When you execute again terraform apply  -> it should the throw the exception/Ask the Prompt whether to recreate . If Yes, it should recreate the server and further..., If no, Job should be failed and no more further stages to execute. 
+   2. Execution of Ansible Packages : Environment - DEV/PRD, Terraform Skip , Ansible Apply :- it should be execute only Ansible Script 
+   3. Destroy of the Server: Environment - DEV/PRD, Terraform Destroy , Ansible - not required (optional whatever): it should destroy the infrastructure under the environment
+   4. Check the Terraform Code -> Environment - DEV/PRD, Terraform Plan , Ansible (not required).
+   5. Destroy the Ansible Stufff -> Environment - DEV/PRD, Terraform Skip , Ansible Destroy :- It should uninstall the packages /applications  -- LEAST Priority
+   6. Terraform Extra Args
+   7. Ansible Playbook : Example - python_deployment.yml
+   7. Ansible Extra Args -- tags/version
+	
+
+-----------------------------------------------------------------------------------------------------

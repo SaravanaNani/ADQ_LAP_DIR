@@ -1,0 +1,198 @@
+resource "google_project_service" "dns" {
+  project = var.project_id
+
+  service = "dns.googleapis.com"
+}
+
+resource "google_compute_network" "custom_network" {
+  name           = var.vpc_name
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "jenkins-server" {
+  name          = var.jenkins-server_subnet_name
+  region        = var.jenkins-server_region
+  network       = google_compute_network.custom_network.self_link
+  ip_cidr_range = var.jenkins-server_cidr
+}
+
+resource "google_compute_subnetwork" "desktop-server" {
+  name          = var.desktop-server_subnet_name
+  region        = var.desktop-server_region
+  network       = google_compute_network.custom_network.self_link
+  ip_cidr_range = var.desktop-server_cidr
+}
+
+resource "google_compute_firewall" "jenkins-server" {
+  name    = var.jenkins-server_firewall_name
+  network = google_compute_network.custom_network.self_link
+
+  # Allow rules
+  allow {
+    protocol = "tcp"
+    ports    = ["22", "8080", "32768-60999", "4243"]
+  }
+  
+  allow {
+    protocol = "icmp"
+  }
+
+  target_tags = [var.jenkins-server_network_tags] # Apply to VMs with this tag
+  source_ranges = ["0.0.0.0/0"]  # Allow traffic from any source
+}
+
+resource "google_compute_firewall" "desktop-server" {
+  name    = var.desktop-server_firewall_name
+  network = google_compute_network.custom_network.self_link
+
+  # Allow rules
+  allow {
+    protocol = "tcp"
+    ports    = ["22", "80", "3389"]
+  }
+  
+  allow {
+    protocol = "icmp"
+  }
+
+  target_tags = [var.desktop-server_network_tags] # Apply to VMs with this tag
+  source_ranges = ["0.0.0.0/0"]  # Allow traffic from any source
+}
+
+resource "google_compute_firewall" "tomcat-server" {
+  name    = var.tomcat-server_firewall_name
+  network = google_compute_network.custom_network.self_link
+
+  # Allow rules
+  allow {
+    protocol = "tcp"
+    ports    = ["8080"]
+  }
+  
+  allow {
+    protocol = "icmp"
+  }
+
+  target_tags = [var.tomcat-server_network_tags] # Apply to VMs with this tag
+  source_ranges = ["0.0.0.0/0"]  # Allow traffic from any source
+}
+
+output "network_self_link" {
+  value = google_compute_network.custom_network.self_link
+}
+
+output "jenkins_subnetwork_self_link" {
+  value = google_compute_subnetwork.jenkins-server.self_link
+}
+
+------------------------------------------------------------------------------------------
+variables.tf
+---------------------------------
+variable "project_id" {
+  type = string
+}
+
+variable "vpc_name" {
+  type = string
+}
+
+variable "jenkins-server_subnet_name" {
+  type = string
+}
+
+variable "jenkins-server_region" {
+type = string
+}
+
+variable "jenkins-server_cidr" {
+type = string
+}
+
+variable "desktop-server_subnet_name" {
+  type = string
+}
+
+variable "desktop-server_region" {
+type = string
+}
+
+variable "desktop-server_cidr" {
+type = string
+}
+
+variable "jenkins-server_firewall_name" {
+  type = string
+}
+
+variable "jenkins-server_network_tags" {
+type = string
+}
+
+variable "desktop-server_firewall_name" {
+  type = string
+}
+
+variable "desktop-server_network_tags" {
+type = string
+}
+
+variable "tomcat-server_firewall_name" {
+  type = string
+}
+
+variable "tomcat-server_network_tags" {
+type = string
+}
+
+---------------------------------------------------------------------------------------
+dev.tfvars
+---------------------------
+
+project_id = "gcp-adq-pocproject-dev"
+
+vpc_name = "custom-vpc-dev"
+
+jenkins-server_subnet_name = "adq-jenkins-box-subnet-dev"
+jenkins-server_region = "us-west1"
+jenkins-server_cidr = "10.0.1.0/24"
+
+desktop-server-subnet_name = "adq-ubuntudesktop-subnet-dev"
+desktop-server_region = "us-west1"
+desktop-server_cidr = "10.0.2.0/24"
+
+jenkins-server_firewall_name = "adq-jenkins-box-firewall-dev"
+jenkins-server_network_tags = "jenkins-server"
+
+desktop-server_firewall_name = "adq-ubuntudesktop-firewall-dev" 
+desktop-server_network_tags = "desktop-server"
+
+tomcat-server_firewall_name = "adq-tomcat-firewall-dev"
+tomcat-server_network_tags = "tomcat-server"
+
+----------------------------------------------------------------
+prod.tfvars
+----------------------
+
+project_id = "gcp-adq-pocproject-prod"
+
+vpc_name = "custom-vpc-prod"
+
+jenkins-server_subnet_name = "adq-jenkins-box-subnet-prod"
+jenkins-server_region = "us-west1"
+jenkins-server_cidr = "10.0.1.0/24"
+
+desktop-server-subnet_name = "adq-ubuntudesktop-subnet-prod"
+desktop-server_region = "us-west1"
+desktop-server_cidr = "10.0.2.0/24"
+
+jenkins-server_firewall_name = "adq-jenkins-box-firewall-prod"
+jenkins-server_network_tags = "jenkins-server"
+
+desktop-server_firewall_name = "adq-ubuntudesktop-firewall-prod" 
+desktop-server_network_tags = "desktop-server"
+
+tomcat-server_firewall_name = "adq-tomcat-firewall-prod"
+tomcat-server_network_tags = "tomcat-server"
+
+
+-------------------------------------------------------------
