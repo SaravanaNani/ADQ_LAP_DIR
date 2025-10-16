@@ -1,0 +1,30 @@
+Application Deployment: K8s -> In Secure Way as Pods -> Particular Services and Particular PODS and NODES
+											
+Application Working : DATA must Be fetched From DB for the UI -> DB Credential should not expose - Maitain in valut
+
+Deployment - CI/CD -> DEV/PROD - BGTD
+
+k8s Pods - pod Metric / taints and tolerance
+
+Application Security -> SSL / TLS  Jenkins and Application
+
+k8s: Ingress for exposing Services using Niginix
+ 
+N/W: Point to site VPC -> k8s cluster Private
+
+Pvt to public cluster - know
+
+security rules -> for accessing
+
+APIs white listing and black listing -> Particular API access to Application
+
+Domain Name to Service 
+
+
+k8s cluster  must be created the VPC created by own created VPC -> VPN: Point to site
+
+
+Note: k8 older versions -> ingress
+
+Grafana Promethus loki
+

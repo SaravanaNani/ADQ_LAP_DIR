@@ -1,0 +1,33 @@
+ #python slicing' -> PRACTICE TO DO
+==================
+>>> #syntax-1 : strobj[Begin:End-1Index] -> frwd direction Begin<End
+>>> #syntax-2 : Strobj[Begin:] -> frwd direcrtion if we not speficty end
+>>> #syntax-3 : Strobj[:END] -> frwd direcrtion if we not speficty begin it takes Begin=0 index or -len(strobj)
+>>> #syntac-4 : Strjb[:] -> Not begin and end , gives entire strobj as result
+>>> #syntax-5 : Strobj[BEGIN:END:STEP] -> frwd direcrtion: 5 RULES WE HAVE
+>>> #RULE-1 : BEGIN:END:STEP INDECES CAN BE +VE OR -VE OR BOTH
+>>> #RULE-2  : BEGIN:END:+VE STEP --> THEN END-1 AND BEGIN>END OR ELSE WE GET '' -->FRWD DIR
+>>> #RULE-3  : BEGIN:END:-VE STEP --> THEN END+1 AND BEGIN<END OR ELSE WE GET '' -->BACKWRD DIR
+>>> #RULE-4  : BEGIN +VE :0 IN FRWD DIR THEN WE GET ''
+>>> #RULE-5  : EEGIN -VE :-1 IN BACKWRD DIR THEN WE GET ''
+
+
+>>> #syntax-5 : Strobj[BEGIN:END:STEP] -> frwd direcrtion: 5 RULES WE HAVE
+  
+REULE 2: +VE STEP COUNT
+
+POSSIBLETIES - BEGIN +VE : END +VE : STEP +VE --> END-1, BEGIN<END AND FRWD STEP COUNT1 DEFAULT
+			BEGIN -VE : END -VE : STEP +VE --> END-1, BEGIN<END AND FRWD STEP COUNT1 DEFAULT
+			BEGIN +VE : END -VE : STEP +VE --> END-1, AND FRWD STEP COUNT1 DEFAULT
+			BEGIN +VE : END -VE : STEP +VE --> END-1, AND FRWD STEP COUNT1 DEFAULT
+
+RULE 3: -VE STEP COUNT
+
+POSSIBLETIES - BEGIN +VE : END +VE : STEP -VE --> END+1, BEGIN>END AND BWRD STEP COUNT
+			BEGIN -VE : END -VE : STEP -VE --> END+1, BEGIN>END AND BWRD STEP COUNT
+			BEGIN +VE : END -VE : STEP -VE --> END+1, AND BWRD STEP COUNT
+			BEGIN +VE : END -VE : STEP -VE --> END+1, AND BWRD STEP COUNT 
+
+RULE 4: BEGIN +VE:0  -> FRWD => O/P ''
+RULE 5: BEGIN-VE :-1 -> BWRD => O/P ''
+

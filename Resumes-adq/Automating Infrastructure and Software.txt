@@ -1,0 +1,113 @@
+                              Automating Infrastructure and Software Configuration with Terraform, Ansible, Jenkins, and Docker
+
+
+get-ubuntudesktop-iac
+.
+├── adq-jenkins-box
+│   ├── adq-java-app  --------------------------> JAVA APP DEPLOYMENT JENKINS FILE JOB1<--------------------
+│   │   ├── Jenkinsfile  
+│   │   └── sonar.sh
+│   ├── adq-python-app--------------------------> PYTHON DEPLOYMENT JENKINS FILE JOB2 <-----------------
+│   │   └── Jenkinsfile
+│   ├── main.tf  --------------------------------> JENKINS VM CREATION --> CREATED BY BASE VM(EXECUTION) CONTAINS STARTUP SCRIPT FOR DOCKER AND TERRAFORM INSTALL
+│   ├── modules
+│   │   └── adq-jenkins-box
+│   │       ├── main.tf                  --->  JENKINS VM CREATION <---
+│   │       └── variables.tf
+│   ├── terraform.tfvars    --------------------------> Values for JENKINS VM
+│   └── variables.tf -----------------------------------------------------------------------------------------------------------------------------------------------
+=====================================================================================================
+├── adq-ubuntudesktop  - CREATES A TRAGET VM VIA JENKINS AND USES ANSILE CONFIG AND CREATES THE SOFTWARE INSTALLATION ON THE TARGET VM USING DOCKER AGENT AS SLAVENODE 
+│   ├── Dockerfile  -------------------------------------------> CLOUD SDK INSTALL AND USER CREATION JENKINS FOR AGENT --------------
+│   ├── Jenkinsfile -----------------------------------------> CREATES INFRA FOR TARGET VM ----CREATED BY JENKINS VM USING DOCKER CONTAINER-------
+│   ├── ansible
+│   │   ├── ansible.cfg  ---------------------------------------> MAKE CONNCTION TO THE TRAGET VM AND RUNS PLAYBOOK 
+│   │   ├── environments
+│   │   │   ├── dev
+│   │   │   │   ├── groups
+│   │   │   │   │   ├── adq_ubuntudesktop.yaml ---- TO PARTICULAR VM TO CONFIGURE
+│   │   │   │   │   └── all.yaml      ------------------------------------ TO ALL HOSTS IN THE GCP VM HAVE THE SSH KEY
+│   │   │   │   └── inventory.gcp.yaml  ----------------------->CONNECTION THROUGH DYNAMIC<------------------
+│   │   │   └── prod
+│   │   │       ├── groups
+│   │   │       │   └── all_hosts.yaml
+│   │   │       └── inventory.gcp.yaml
+│   │   ├── main.yaml
+│   │   ├── playbook_deployment.yml
+│   │   ├── playbook_destroy.yml
+│   │   ├── playbook_services.yml
+│   │   ├── playbook_softwares.yml
+│   │   └── roles
+│   │       ├── java
+│   │       │   └── tasks
+│   │       │       └── main.yaml  -> INSTALL JAVA 11 DEFAULT OR ELSE TAKES VERSION FROM JENKINS PARAMETERS
+│   │       ├── java-d
+│   │       │   └── tasks
+│   │       │       └── main.yaml  -> UINSTALL JAVA 11 DEFAULT OR ELSE TAKES VERSION FROM JENKINS PARAMETERS
+│   │       ├── notepad++
+│   │       │   └── tasks
+│   │       │       └── main.yaml  -> INSTALL NOTEPAD ++
+│   │       ├── notepad-d
+│   │       │   └── tasks
+│   │       │       └── main.yaml  -> UNINSTALL NOTEPAD ++
+│   │       ├── python
+│   │       │   └── tasks
+│   │       │       └── main.yaml   -> INSTALL PYTHON 3
+│   │       ├── python-d
+│   │       │   └── tasks
+│   │       │       └── main.yaml   -> UNINSTALL PYTHON 3
+│   │       ├── tomcat
+│   │       │   ├── handlers
+│   │       │   │   └── main.yaml  ------------------> TOMCAT INSTALL WITH JENKINS PARAMETER FOR VERSION USING HANDLER CONCEPT
+│   │       │   └── tasks
+│   │       │       └── main.yaml
+│   │       ├── tomcat-d
+│   │       │   └── tasks
+│   │       │       └── main.yaml  ----------------> TOMACT UNINSTALL
+│   │       ├── ubuntudesktop
+│   │       │   ├── handlers
+│   │       │   │   └── main.yaml   ---------> UBUNTU CHROME REMOTE DESKTOP INSTALLATION USING HANDLERS------->
+│   │       │   └── tasks
+│   │       │       └── main.yaml
+│   │       └── ubuntudesktop-d
+│   │           └── tasks      ---------> UBUNTU CHROME REMOTE DESKTOP UNINSTALLATION USING HANDLERS------->
+│   └── terraform=======================================================================================================================
+|                    
+                                    CREATE TRAGET VM AT DEV PROJECT OR PROD PROJECT VIA JENKINS WITH N/W & SA CREATED BY ROOT TERRAFORM MDOULE - U CREATE A N/W IN ONE PROJECT AND USE THE NAME                  HERE INSTEAD OF N/W MODULE
+|
+│       ├── environments
+│       │   ├── dev
+│       │   │   ├── backend.tf
+│       │   │   ├── main.tf
+│       │   │   ├── terraform.tfvars
+│       │   │   └── variables.tf
+│       │   └── prod
+│       │       ├── backend.tf
+│       │       ├── main.tf
+│       │       ├── terraform.tfvars
+│       │       └── variables.tf
+│       └── modules
+│           └── ubuntu-desktop      
+│               ├── main.tf
+│               └── variables.tf
+└── terraform   =====================================================================================================
+    ├── environments
+    │   ├── dev                      ------------------ DEV PROJECT N/W & SA VARIABLES ----------------------
+    │   │   ├── backend.tf
+    │   │   ├── main.tf
+    │   │   ├── terraform.tfvars
+    │   │   └── variables.tf
+    │   └── prod                     ------------------- PROD PROJECT N/W & SA VARIABLES ------------------
+    │       ├── backend.tf
+    │       ├── main.tf
+    │       ├── terraform.tfvars
+    │       └── variables.tf
+    └── modules
+        ├── networking     ---------------------------------------N/W FOR JENKINS -----------
+        │   ├── main.tf
+        │   ├── outputs.tf
+        │   └── variables.tf
+        └── service-account------------------------------------- SA FOR WORKING ON ENTIRE INFRA BY IMPERSONATING JENKINS VM --------------------
+            ├── main.tf
+            ├── outputs.tf
+            └── variables.tf
